@@ -6,11 +6,11 @@ class ColumnCompleter(object):
         self.space_filler = space_filler
         self.silence_warnings = silence_warnings
         if not self.silence_warnings:
-            self.warn_about_column_names_edge_spaces()
-        self.set_columns()
+            self._warn_about_column_names_edge_spaces()
+        self._set_columns()
 
 
-    def warn_about_column_names_edge_spaces(self):
+    def _warn_about_column_names_edge_spaces(self):
         if not hasattr(self.columns, 'str'):
             return None
         if self.columns.str.startswith(' ').any():
@@ -20,7 +20,7 @@ class ColumnCompleter(object):
             raise Warning("The following columns ends with one or more spaces: " +
                            self.columns[self.columns.str.endswith(' ')])
 
-    def set_columns(self):
+    def _set_columns(self):
         if self.space_filler is None:
             self.mapping = {col: col for col in self.columns if ' ' not in col}
         else:
