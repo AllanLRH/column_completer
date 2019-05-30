@@ -30,7 +30,7 @@ class ColumnCompleter(object):
         self._set_columns()
 
     def _warn_about_column_names_edge_spaces(self):
-        if not hasattr(self.columns, 'str'):
+        if not hasattr(self.columns, 'str'):  # the column names are not strings
             return None
         if self.columns.str.startswith(' ').any():
             raise Warning("The following columns starts with one or more spaces: " +
@@ -40,7 +40,9 @@ class ColumnCompleter(object):
                           self.columns[self.columns.str.endswith(' ')])
 
     def _set_columns(self):
-        if self.space_filler is None:
+        if not hasattr(self.columns, 'str'):  # the column names are not strings
+            self.mapping = {col: col for col in self.columns}
+        elif self.space_filler is None:
             self.mapping = {col: col for col in self.columns if ' ' not in col}
         else:
             self.mapping = {col.replace(
