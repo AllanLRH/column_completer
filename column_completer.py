@@ -22,7 +22,9 @@ class ColumnCompleter(object):
             with spaces, which is hard to detect by visual inspection, by default False.
         """
         super(ColumnCompleter, self).__init__()
-        self.columns = df.columns
+        # We copy the columns to avoid keeping old references to a DataFrame which
+        # would otherwise be garbage collected.
+        self.columns = df.columns.copy()
         self.space_filler = space_filler
         self.silence_warnings = silence_warnings
         if not self.silence_warnings:
